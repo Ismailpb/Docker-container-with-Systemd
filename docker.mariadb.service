@@ -1,0 +1,21 @@
+[Unit]
+Description=MariaDB
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStart=/usr/bin/docker run --rm \
+    --name=mariadb \
+    -p 3306:3306 \
+    -e MYSQL_ROOT_PASSWORD=root \
+    -e MYSQL_DATABASE=test \
+    -e MYSQL_USER=user \
+    -e MYSQL_PASSWORD=user \
+    -v /var/lib/mysql:/var/lib/mysql \
+    mariadb:latest
+ExecStop=-/usr/bin/docker stop mariadb # See UPDATEs 1 & 2
+
+[Install]
+WantedBy=multi-user.target
